@@ -21,7 +21,7 @@ class Route extends Application\Routers\Route
 	private $id;
 
 	/** @var string|NULL */
-	private $format;
+	private $format = 'jpg';
 
 	/** @var string */
 	private $idParameter = 'id';
