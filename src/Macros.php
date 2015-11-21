@@ -13,7 +13,9 @@ use Latte\PhpWriter;
 
 class Macros extends Latte\Macros\MacroSet
 {
-
+	/**
+	 * @param Latte\Compiler $parser
+	 */
 	public static function install(Latte\Compiler $parser)
 	{
 		$me = new static($parser);
@@ -30,6 +32,11 @@ class Macros extends Latte\Macros\MacroSet
 
 
 
+	/**
+	 * @param MacroNode $node
+	 * @param PhpWriter $writer
+	 * @return string
+	 */
 	public function macroSrc(MacroNode $node, PhpWriter $writer)
 	{
 		$absolute = substr($node->args, 0, 2) === '//' ? '//' : '';
@@ -38,7 +45,10 @@ class Macros extends Latte\Macros\MacroSet
 	}
 
 
-
+	/**
+	 * @param array $arguments
+	 * @return array
+	 */
 	public static function prepareArguments(array $arguments)
 	{
 		foreach ($arguments as $key => $value) {
@@ -50,6 +60,9 @@ class Macros extends Latte\Macros\MacroSet
 				unset($arguments[$key]);
 			} elseif ($key === 2 && !isset($arguments['height'])) {
 				$arguments['height'] = $value;
+				unset($arguments[$key]);
+			} elseif ($key === 3 && !isset($arguments['format'])) {
+				$arguments['format'] = $value;
 				unset($arguments[$key]);
 			}
 		}
