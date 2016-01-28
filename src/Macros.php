@@ -64,6 +64,9 @@ class Macros extends Latte\Macros\MacroSet
 			} elseif ($key === 3 && !isset($arguments['format'])) {
 				$arguments['format'] = $value;
 				unset($arguments[$key]);
+			} elseif ($key === 4 && !isset($arguments['method'])) {
+				$arguments['method'] = $value;
+				unset($arguments[$key]);
 			}
 		}
 
