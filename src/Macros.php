@@ -22,6 +22,11 @@ class Macros extends Latte\Macros\MacroSet
 		}, NULL, function(MacroNode $node, PhpWriter $writer) use ($me) {
 			return ' ?> src="<?php ' . $me->macroSrc($node, $writer) . ' ?>"<?php ';
 		});
+		$me->addMacro('data-src', function (MacroNode $node, PhpWriter $writer) use ($me) {
+			return $me->macroSrc($node, $writer);
+		}, NULL, function(MacroNode $node, PhpWriter $writer) use ($me) {
+			return ' ?> data-src="<?php ' . $me->macroSrc($node, $writer) . ' ?>"<?php ';
+		});
 	}
 
 
