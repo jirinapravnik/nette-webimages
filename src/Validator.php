@@ -9,8 +9,9 @@ namespace DotBlue\WebImages;
 use Nette;
 
 
-class Validator extends Nette\Object
+class Validator
 {
+	use Nette\SmartObject;
 
 	/** @var array[] */
 	private $rules = [];

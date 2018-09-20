@@ -9,8 +9,9 @@ namespace DotBlue\WebImages;
 use Nette;
 
 
-class ImageRequest extends Nette\Object
+class ImageRequest
 {
+	use Nette\SmartObject;
 
 	/** @var string */
 	private $id;

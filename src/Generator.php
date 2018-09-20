@@ -12,8 +12,9 @@ use Nette\Http;
 use Nette\Utils\Image;
 
 
-class Generator extends Nette\Object
+class Generator
 {
+	use Nette\SmartObject;
 
 	const FORMAT_JPEG = Image::JPEG;
 	const FORMAT_PNG = Image::PNG;
