@@ -28,15 +28,15 @@ class Extension extends DI\CompilerExtension
 	public function loadConfiguration()
 	{
 		$container = $this->getContainerBuilder();
-		$config = $this->getConfig($this->defaults);
+		$config = \Nette\Schema\Helpers::merge($this->getConfig(), $this->defaults);
 
 		$validator = $container->addDefinition($this->prefix('validator'))
 			->setClass('DotBlue\WebImages\Validator');
 
 		$generator = $container->addDefinition($this->prefix('generator'))
-			->setClass('DotBlue\WebImages\Generator', [
+			->setFactory('DotBlue\WebImages\Generator', [
 				$config['wwwDir'],
-			]);
+				]);
 
 		foreach ($config['rules'] as $rule) {
 			$validator->addSetup('$service->addRule(?, ?)', [
@@ -80,7 +80,7 @@ class Extension extends DI\CompilerExtension
 				}
 
 				$route = $container->addDefinition($this->prefix('route' . $i))
-					->setClass('DotBlue\WebImages\Route', [
+					->setFactory('DotBlue\WebImages\Route', [
 						$definition['mask'],
 						$definition['defaults'],
 						$this->prefix('@generator'),
@@ -124,14 +124,12 @@ class Extension extends DI\CompilerExtension
 		}
 
 		foreach ($config['providers'] as $name => $provider) {
-			$this->compiler->parseServices($container, [
-				'services' => [$this->prefix('provider' . $name) => $provider],
-			]);
+			$this->compiler->loadDefinitionsFromConfig([$this->prefix('provider' . $name) => $provider]);
 			$generator->addSetup('addProvider', [$this->prefix('@provider' . $name)]);
 		}
 
 		$latte = $container->getDefinition('nette.latteFactory');
-		$latte->addSetup('DotBlue\WebImages\Macros::install(?->getCompiler())', ['@self']);
+		$latte->getResultDefinition()->addSetup('DotBlue\WebImages\Macros::install(?->getCompiler())', ['@self']);
 	}
 
 
@@ -139,7 +137,7 @@ class Extension extends DI\CompilerExtension
 	public function beforeCompile()
 	{
 		$container = $this->getContainerBuilder();
-		$config = $this->getConfig($this->defaults);
+		$config = \Nette\Schema\Helpers::merge($this->getConfig(), $this->defaults);
 
 		if ($config['prependRoutesToRouter']) {
 			$router = $container->getByType('Nette\Application\IRouter');
